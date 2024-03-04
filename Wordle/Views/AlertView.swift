@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct AlertView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+  let text: String
+  var body: some View {
+    Text(text)
+      .foregroundColor(.white)
+      .padding()
+      .background(RoundedRectangle(cornerRadius: 10).fill(Color.primary))
+  }
 }
 
-#Preview {
-    AlertView()
+struct AlertView_Previews: PreviewProvider {
+  static var previews: some View {
+    AlertView(text: "Not in word list.")
+  }
 }

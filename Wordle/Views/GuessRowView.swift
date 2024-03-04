@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct GuessRowView: View {
+  @EnvironmentObject var datamodel: WordleDataModel
+  @State var colors: [Color] = Array(repeating: .black, count: 5)
   @Binding var guess: String
   @State var squish: Bool = false
   @State var fill: Bool = false
-  @State var colors: [Color] = Array(repeating: .black, count: 5)
 
   func animate(colors: [Color]) {
     withAnimation(.easeInOut(duration: 0.25)) {
@@ -41,7 +42,7 @@ struct GuessRowView: View {
         }
       }
     }
-    .onChange(of: guess) {something, _ in
+    .onChange(of: guess) {
       animate(colors: [.gray, .green, .green, .green, .green])
     }
   }

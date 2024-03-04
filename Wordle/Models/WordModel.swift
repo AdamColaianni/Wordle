@@ -8,7 +8,7 @@
 import Foundation
 
 class WordModel {
-  static func reset() -> String {
+  static func getNewWord() -> String {
     if let filePath = Bundle.main.path(forResource: "answers", ofType: "txt"), let fileContents = try? String(contentsOfFile: filePath) {
       let lines = fileContents.split(separator: "\n")
       return lines.randomElement()?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -17,8 +17,8 @@ class WordModel {
     }
   }
   
-  static func isStringContained(_ searchString: String, inResourceFileNamed fileName: String, withExtension fileExtension: String) -> Bool {
-    guard let filePath = Bundle.main.path(forResource: fileName, ofType: fileExtension),
+  static func isWordAllowed(_ searchString: String) -> Bool {
+    guard let filePath = Bundle.main.path(forResource: "allowed-guesses", ofType: "txt"),
           let fileContents = try? String(contentsOfFile: filePath) else {
       return false
     }

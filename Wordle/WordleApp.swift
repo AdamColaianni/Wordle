@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct WordleApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  @ObservedObject var datamodel = WordleDataModel()
+  var body: some Scene {
+    WindowGroup {
+      MainView()
+        .environmentObject(datamodel)
     }
+  }
 }

@@ -7,43 +7,29 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainView: View {
   @EnvironmentObject var datamodel: WordleDataModel
   
   var body: some View {
     VStack {
-      //      testGuessRowView()
       ForEach(0..<6) { index in
         GuessRowView(guess: $datamodel.guesses[index])
       }
       KeyboardView()
+        .padding(.top, 20.0)
     }
-  }
-}
-
-extension Text {
-  func headerStyle() -> some View {
-    self
-      .font(.title)
-      .foregroundColor(.blue)
-  }
-}
-
-struct SubmitButtonStyle: ButtonStyle {
-  //  .buttonStyle(SubmitButtonStyle())
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .padding()
-      .foregroundColor(.white)
-      .background(Rectangle()
-        .foregroundColor(Color.blue)
-        .cornerRadius(5))
+    .overlay(alignment: .top) {
+      if let alertText = datamodel.alertText {
+        AlertView(text: alertText)
+          .offset(y: -50)
+      }
+    }
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
+    MainView()
       .environmentObject(WordleDataModel())
   }
 }

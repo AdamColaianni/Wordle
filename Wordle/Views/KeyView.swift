@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct KeyView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @EnvironmentObject var datamodel: WordleDataModel
+  @State var letter: String
+  
+  var body: some View {
+    Button {
+      datamodel.pressedKey(letter: letter)
+    } label: {
+      Image(systemName: "\(letter).square")
+        .resizable()
+        .foregroundColor(.black)
+        .background(Rectangle()
+          .foregroundColor(datamodel.getColorOf(letter: letter))
+          .cornerRadius(10))
+        .frame(width: 37.0, height: 43.0)
     }
+  }
 }
 
-#Preview {
-    KeyView()
+struct KeyView_Previews: PreviewProvider {
+  static var previews: some View {
+    KeyView(letter: "a")
+      .environmentObject(WordleDataModel())
+  }
 }
