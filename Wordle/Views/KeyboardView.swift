@@ -7,44 +7,31 @@
 
 import SwiftUI
 
-class KeyboardViewModel: ObservableObject {
-  @Published var greenedKeysList: [String]
-  @Published var yellowedKeysList: [String]
-  @Published var grayedKeysList: [String]
-  @Published var typedWord: [String] = []
+struct KeyboardView: View {
+  @State var greenedKeysList: [String]
+  @State var yellowedKeysList: [String]
+  @State var grayedKeysList: [String]
+  @State var typedWord: [String]
   
   let keyboardLayoutArray: [[String]] = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],["a", "s", "d", "f", "g", "h", "j", "k", "l"],["z", "x", "c", "v", "b", "n", "m"]]
   
-  init(greenKeys: [String], yellowKeys: [String], grayKeys: [String]) {
+  init(greenKeys: [String], yellowKeys: [String], grayKeys: [String], typedWord: [String]) {
     self.greenedKeysList = greenKeys
     self.yellowedKeysList = yellowKeys
     self.grayedKeysList = grayKeys
+    self.typedWord = typedWord
   }
   
   func pressedKey(letter: String) {
-    print("You have pressed \(letter)")
-    if keyboardLayoutArray[0].contains(letter) {
-      greenedKeysList.append(letter)
-    } else if keyboardLayoutArray[1].contains(letter) {
-      yellowedKeysList.append(letter)
-    } else {
-      grayedKeysList.append(letter)
-    }
     if typedWord.count < 5 {
       typedWord.append(letter)
     }
-    print(typedWord)
   }
   
   func pressedBackspace() {
-    print("BACKSPACE")
-    greenedKeysList.removeAll()
-    yellowedKeysList.removeAll()
-    grayedKeysList.removeAll()
     if typedWord.count > 0 {
       typedWord.remove(at: typedWord.count - 1)
     }
-    print(typedWord)
   }
   
   func getColorOf(letter: String) -> Color {
@@ -73,7 +60,7 @@ class KeyboardViewModel: ObservableObject {
     }
   }
   
-  func keyboardViewLayout() -> some View {
+  var body: some View {
     VStack(spacing: 6) {
       ForEach(0..<3) { row in
         HStack(spacing: 2) {
@@ -101,27 +88,9 @@ class KeyboardViewModel: ObservableObject {
   }
 }
 
-struct KeyboardView: View {
-  @ObservedObject var viewModel: KeyboardViewModel
-
-  init(viewModel: KeyboardViewModel) {
-    self.viewModel = viewModel
-  }
-
-  var body: some View {
-    viewModel.keyboardViewLayout()
-  }
-}
-
-extension KeyboardView {
-  static func `default`() -> KeyboardView {
-    let viewModel = KeyboardViewModel(greenKeys: [], yellowKeys: [], grayKeys: [])
-    return KeyboardView(viewModel: viewModel)
-  }
-}
-
 struct KeyboardView_Previews: PreviewProvider {
   static var previews: some View {
-    KeyboardView.default()
+    KeyboardView(greenKeys: <#T##[String]#>, yellowKeys: <#T##[String]#>, grayKeys: <#T##[String]#>, typedWord: <#T##[String]#>)
+//      .environmentObject()
   }
 }
