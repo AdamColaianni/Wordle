@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct GuessRowView: View {
-  @EnvironmentObject var datamodel: WordleDataModel
-  @State var colors: [Color] = Array(repeating: .black, count: 5)
-  @Binding var guess: String
+  @Binding var guess: Guess
+  @State var displayedColors: [Color] = Array(repeating: .letterbox, count: 5)
   @State var squish: Bool = false
   @State var fill: Bool = false
 
-  func animate(colors: [Color]) {
+  func animate() {
     withAnimation(.easeInOut(duration: 0.25)) {
       self.squish.toggle()
     } completion: {
-      self.colors = colors
+      self.displayedColors = guess.colors
       self.fill.toggle()
       withAnimation(.easeInOut(duration: 0.25)) {
         self.squish.toggle()
@@ -26,31 +25,26 @@ struct GuessRowView: View {
     }
   }
   
-  func reset() {
-    animate(colors: Array(repeating: .black, count: 5))
-  }
-
   var body: some View {
     VStack {
       HStack(spacing: 10) {
         ForEach(0..<5) { index in
-          Image(systemName: index < guess.count ? String(Array(guess)[index]) + ".square" + (self.fill ? ".fill" : "") : "square")
+          Image(systemName: index < guess.word.count ? String(Array(guess.word)[index]) + ".square" + (self.fill ? ".fill" : "") : "square")
             .resizable()
             .frame(width: 60.0, height: 60.0)
-            .foregroundColor(self.colors[index])
+            .foregroundColor(self.displayedColors[index])
             .scaleEffect(x: 1, y: self.squish ? 0.0 : 1.0)
         }
       }
     }
-    .onChange(of: guess) {
-      animate(colors: [.gray, .green, .green, .green, .green])
+    .onChange(of: guess.submitted) {
+      animate()
     }
   }
 }
 
 struct testGuessRowView_Previews: PreviewProvider {
   static var previews: some View {
-    GuessRowView(guess: .constant(""))
-//      .environmentObject(WordleDataModel())
+    GuessRowView(guess: .constant(Guess()))
   }
 }

@@ -13,7 +13,7 @@ struct AlertView: View {
     Text(text)
       .foregroundColor(.white)
       .padding()
-      .background(RoundedRectangle(cornerRadius: 10).fill(Color.primary))
+      .background(RoundedRectangle(cornerRadius: 10).fill(.letterbox))
   }
 }
 

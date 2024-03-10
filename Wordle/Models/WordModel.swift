@@ -18,7 +18,7 @@ class WordModel {
   }
   
   static func isWordAllowed(_ searchString: String) -> Bool {
-    guard let filePath = Bundle.main.path(forResource: "allowed-guesses", ofType: "txt"),
+    guard let filePath = Bundle.main.path(forResource: "wordle-allowed-clean-words", ofType: "txt"),
           let fileContents = try? String(contentsOfFile: filePath) else {
       return false
     }
